@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Will You Be My Valentine?</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background-image: url(Pink_Background.webp);
+      display: flex; /* Use flexbox to center the card */
+      align-items: center;
+      justify-content: center;
+      font-family: 'Arial', sans-serif;
+    }
+
+    .card {
+      background-color: #ffffff;
+      width: 420px;
+      padding: 30px;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+      position: relative; /* Essential for positioning the moving button within this boundary */
+    }
+
+    .card img {
+      width: 225px;
+      margin-bottom: 15px;
+    }
+
+    h1 {
+      font-size: 22px;
+      margin-bottom: 30px;
+      color: #333;
+    }
+
+    .buttons {
+      display: flex; /* Use flexbox to align buttons side-by-side */
+      justify-content: center; /* Center the buttons horizontally within their container */
+      gap: 30px; /* Space between buttons */
+      position: relative; /* Provide positioning context for the 'no' button when it moves */
+      height: 40px; /* Ensure container has a height to prevent page jumping when 'no' moves */
+    }
+
+    button {
+      padding: 10px 25px;
+      font-size: 16px;
+      border-radius: 20px;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      /* Buttons start as static (normal flow) */
+      position: static; 
+    }
+
+    #yes {
+      background-color: #ff4d88;
+      color: white;
+    }
+
+    #yes:hover {
+        background-color: #e63973;
+    }
+
+    #no {
+      background-color: #e0e0e0;
+      color: #333;
+      /*transition: all 0.5s ease; /* Smooth transition when moving */
+    }
+
+    .shy-text {
+      font-size: 12px;
+      margin-top: 25px;
+      color: #777;
+    }
+
+    .hidden {
+        visibility: collapse;
+    }
+    
+    #yes.enlarged {
+        transform: scale(2.8);
+    }
+  </style>
+</head>
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+  <div class="card">
+    <img src="cute_bunny.avif">
+
+    <h1>Valerie, will you be my Valentine? 💖</h1>
+
+    <div class="buttons">
+      <button id="yes" onclick="yesClicked()">Yes</button>
+      <button id="no">No</button>
+    </div>
+
+    <script>
+        document.getElementById('no').addEventListener('click', () =>{
+            document.getElementById('no').classList.toggle("hidden");
+            alert("WOW I can't believe you would try to click that. I think you might have misclicked. Let me fix that for you ;P");
+            document.getElementById('yes').classList.toggle("enlarged")
+        })
+    </script>
+
+    <div class="shy-text">"No" doesn't want to be clicked</div>
+  </div>
+
+  <script>
+    const noButton = document.getElementById("no");
+    const buttonsContainer = document.querySelector(".card");
+    const textElement = document.querySelector('.shy-text');
+    const heart = confetti.shapeFromText({ text: '❤️' });
+    const messages = [
+    "Noo dont chase me",
+    "Nooooo Dont",
+    "Hehe Stooooop",
+    "Stoooooop hehehe",
+    "STOP",
+    "STOOOOP",
+    "Officers, THATS THE PERSON"
+    ];
+    let currentIndex = 0;
+
+    function cycleMessage() {
+    // Update text
+    textElement.textContent = messages[currentIndex];
+    
+    // Increment index, reset to 0 if at end
+    currentIndex = (currentIndex + 1) % messages.length;
+    }
+
+
+
+    noButton.addEventListener("mouseenter", () => {
+      // When hovered, switch to absolute positioning so we can use top/left
+      noButton.style.position = 'absolute';
+      noButton.addEventListener('mouseover', cycleMessage);
+
+      // Calculate the boundaries within the buttons container
+      // Use clientWidth/Height for the container boundaries
+      const maxX = buttonsContainer.clientWidth - noButton.offsetWidth;
+      const maxY = 50;
+      //const maxY = buttonsContainer.clientHeight - noButton.offsetHeight;
+
+      // Generate random positions within the container bounds
+      // Add a slight offset to keep it within the general button area
+      const randomX = Math.random() * maxX;
+      const randomY = Math.random() * maxY;
+
+      noButton.style.left = randomX + "px";
+      noButton.style.top = randomY + "px";
+    });
+
+    document.getElementById('yes').addEventListener('click', () => {
+    confetti({
+        particleCount: 1500,
+        spread: 70,
+        origin: { y: 0.6 }
+    });
+
+    // 2. Fireworks (Explosions from different sides)
+  confetti({
+    particleCount: 1000,
+    startVelocity: 30,
+    spread: 360,
+    origin: { x: 0.2, y: 0.5 } // Left side firework
+  });
+  confetti({
+    particleCount: 1000,
+    startVelocity: 30,
+    spread: 360,
+    origin: { x: 0.8, y: 0.5 } // Right side firework
+  });
+
+  // 3. Sparkles (Star-shaped particles)
+  confetti({
+    particleCount: 800,
+    spread: 100,
+    origin: { y: 0.7 },
+    shapes: ['heart'], // Uses star shapes for a sparkling effect
+    colors: ['#ff0000'] // Gold and white colors
+  });
+    });
+
+
+    function yesClicked() {
+      alert(`YAY!!! 💕🥰 I LOVE YOU SO MUCH
+    You mean the world to me Valerie. You are such an amazing woman and I am so lucky I get to be yours.`);
+    }
+  </script>
+</body>
+</html>
